@@ -1,0 +1,8 @@
+Rules:
+   (defrule [name] 
+   "comment"
+   (define ....)
+   (conditions ....) LHS (ifs)
+   => if everything is true
+      code RHS
+   ) 

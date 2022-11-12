@@ -1,0 +1,50 @@
+Expert system development life cycle:
+
+Rapid prototype: proof by AC
+Waterfall: Decide everythnig first, then code
+Software by committee
+
+Hard to get people to tell you what they know
+Extract knowledge from a domain expert
+Which developers were working on it?
+People working on it determine success
+
+Life cycle:
+Human computer interface
+Need to work for non-experts
+
+Special approaches
+Not good implementation if use rapid prototyping
+Structured systems didn't work unless you had the expert
+KADS: works well
+Data drives the code
+
+Rapid prototyping:
+   Write a little test a lot
+   Cyclical prototyping
+   Get a prototype, repeatedly debug
+
+Turban's life cycle
+   Phase 1: Initialization
+      Problem definition
+      Needs assessment
+      Alternative solutions
+      Appropriate?
+      Discover the problem
+      An easy enough problem
+   Phase 2: System analysis & design
+   Phase 3: Prototyping
+      Build a prototype
+      Establish the feasibility
+   Phase 4: System development
+      Build knowledge base
+      Test and improve the knowledge base
+   Phase 5: Implementation
+   Phase 6: Maintaining
+
+KADS
+   Not very rule-based
+   Rule-based are hard to expain
+   Build a conceptual model of the knowledege
+   Complete it before programming
+   Intermediate representations
