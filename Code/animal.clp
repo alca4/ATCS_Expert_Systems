@@ -30,14 +30,14 @@
 (defglobal ?*QUESTIONS_ASKED* = 0)
 
 ; need backward chaining
-(do-backward-chaining mammal)
 (do-backward-chaining omnivore)
 (do-backward-chaining carnivore)
 (do-backward-chaining herbivore)
-(do-backward-chaining legs)
-(do-backward-chaining bird)
-(do-backward-chaining underwater)
+(do-backward-chaining mammal)
 (do-backward-chaining arthropod)
+(do-backward-chaining reptile)
+(do-backward-chaining face)
+(do-backward-chaining underwater)
 (do-backward-chaining fins)
 (do-backward-chaining domesticated)
 (do-backward-chaining tree)
@@ -62,12 +62,6 @@
 )
 
 ; Question asking functions
-(defrule ask-mammal
-   (need-mammal ?)
- =>
-   (assert (mammal (askQuestion "Is your animal a mammal?")))
-)
-
 (defrule ask-omnivore
    (need-omnivore ?)
  =>
@@ -86,28 +80,28 @@
    (assert (herbivore (askQuestion "Is your animal an herbivore?")))
 )
 
-(defrule ask-legs
-   (need-legs ?)
+(defrule ask-mammal
+   (need-mammal ?)
  =>
-   (assert (legs (askQuestion "Is your animal a legged animal?")))
-)
-
-(defrule ask-bird
-   (need-bird ?)
- =>
-   (assert (bird (askQuestion "Is your animal a bird?")))
-)
-
-(defrule ask-underwater
-   (need-underwater ?)
- =>
-   (assert (underwater (askQuestion "Is your animal an animal which lives underwater?")))
+   (assert (mammal (askQuestion "Is your animal a mammal?")))
 )
 
 (defrule ask-arthropod
    (need-arthropod ?)
  =>
    (assert (arthropod (askQuestion "Is your animal an arthropod?")))
+)
+
+(defrule ask-reptile
+   (need-reptile ?)
+ =>
+   (assert (reptile (askQuestion "Is your animal a reptile?")))
+)
+
+(defrule ask-face
+   (need-face ?)
+ =>
+   (assert (face (askQuestion "Is your animal an animal which has features on its face or head (e.g. beak, tusks, horns)?")))
 )
 
 (defrule ask-fins
@@ -126,6 +120,24 @@
    (need-tree ?)
  =>
    (assert (tree (askQuestion "Is your animal able to climb trees?")))
+)
+
+(defrule ask-underwater
+   (need-underwater ?)
+ =>
+   (assert (underwater (askQuestion "Is your animal an animal which lives underwater?")))
+)
+
+(defrule ask-desert
+   (need-desert ?)
+ =>
+   (assert (desert (askQuestion "Is your animal an animal which lives in the desert?")))
+)
+
+(defrule ask-bird
+   (need-bird ?)
+ =>
+   (assert (bird (askQuestion "Is your animal a bird?")))
 )
 
 ; Animal rules: identifies an animal based on a unique subset of traits 
@@ -191,6 +203,7 @@
 (defrule is-dog
    (omnivore y)
    (mammal y)
+   (domesticated y)
  =>
    (finish "Is your animal a dog?")
 )
@@ -204,8 +217,7 @@
 
 (defrule is-snake
    (carnivore y)
-   (tree y)
-   (reptile y)
+   (desert y)
  =>
    (finish "Is your animal a snake?")
 )
@@ -222,7 +234,43 @@
    (mammal y)
    (face y)
  =>
-   (finish "Is your animal a crab?")
+   (finish "Is your animal an elephant?")
+)
+
+(defrule is-turtle
+   (omnivore y)
+   (reptile y)
+ =>
+   (finish "Is your animal a turtle?")
+)
+
+(defrule is-camel
+   (herbivore y)
+   (desert y)
+ =>
+   (finish "Is your animal a camel?")
+)
+
+(defrule is-chicken
+   (omnivore y)
+   (bird y)
+ =>
+   (finish "Is your animal a chicken?")
+)
+
+(defrule is-polar-bear
+   (carnivore y)
+   (mammal y)
+ =>
+   (finish "Is your animal a polar bear?")
+)
+
+(defrule is-penguin
+   (carnivore y)
+   (underwater y)
+   (bird y)
+ =>
+   (finish "Is your animal a polar bear?")
 )
 
 ; Gameplay functions
