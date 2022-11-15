@@ -36,11 +36,20 @@
 (do-backward-chaining mammal)
 (do-backward-chaining arthropod)
 (do-backward-chaining reptile)
-(do-backward-chaining face)
-(do-backward-chaining underwater)
-(do-backward-chaining fins)
-(do-backward-chaining domesticated)
+(do-backward-chaining farm)
+(do-backward-chaining leg)
+(do-backward-chaining pet)
 (do-backward-chaining tree)
+(do-backward-chaining water)
+(do-backward-chaining bird)
+(do-backward-chaining fish)
+(do-backward-chaining heavy)
+(do-backward-chaining medium)
+(do-backward-chaining light)
+(do-backward-chaining shell)
+(do-backward-chaining horn)
+(do-backward-chaining tail)
+(do-backward-chaining claw)
 
 (defrule first-rule "prints user interface instructions"
    (declare (salience 10000))
@@ -65,212 +74,273 @@
 (defrule ask-omnivore
    (need-omnivore ?)
  =>
-   (assert (omnivore (askQuestion "Is your animal an omnivore?")))
+   (assert (omnivore (askQuestion "Is your animal an omnivore? ")))
 )
 
 (defrule ask-carnivore
    (need-carnivore ?)
  =>
-   (assert (carnivore (askQuestion "Is your animal a carnivore?")))
+   (assert (carnivore (askQuestion "Is your animal a carnivore? ")))
 )
 
 (defrule ask-herbivore
    (need-herbivore ?)
  =>
-   (assert (herbivore (askQuestion "Is your animal an herbivore?")))
+   (assert (herbivore (askQuestion "Is your animal an herbivore? ")))
 )
 
 (defrule ask-mammal
    (need-mammal ?)
  =>
-   (assert (mammal (askQuestion "Is your animal a mammal?")))
+   (assert (mammal (askQuestion "Is your animal a mammal? ")))
 )
 
 (defrule ask-arthropod
    (need-arthropod ?)
  =>
-   (assert (arthropod (askQuestion "Is your animal an arthropod?")))
+   (assert (arthropod (askQuestion "Is your animal an arthropod? ")))
 )
 
 (defrule ask-reptile
    (need-reptile ?)
  =>
-   (assert (reptile (askQuestion "Is your animal a reptile?")))
+   (assert (reptile (askQuestion "Is your animal a reptile? ")))
 )
 
-(defrule ask-face
-   (need-face ?)
+(defrule ask-farm
+   (need-farm ?)
  =>
-   (assert (face (askQuestion "Is your animal an animal which has features on its face or head (e.g. beak, tusks, horns)?")))
+   (assert (farm (askQuestion "Is your animal a farm animal? ")))
 )
 
-(defrule ask-fins
-   (need-fins ?)
+(defrule ask-leg
+   (need-leg ?)
  =>
-   (assert (fins (askQuestion "Is your animal an animal which has fins?")))
+   (assert (leg (askQuestion "Does your animal have legs? ")))
 )
 
-(defrule ask-domesticated
-   (need-domesticated ?)
+(defrule ask-pet
+   (need-pet ?)
  =>
-   (assert (domesticated (askQuestion "Is your animal domesticated?")))
+   (assert (pet (askQuestion "Is your animal a common household pet? ")))
 )
 
 (defrule ask-tree
    (need-tree ?)
  =>
-   (assert (tree (askQuestion "Is your animal able to climb trees?")))
+   (assert (tree (askQuestion "Can your animal climb trees? ")))
 )
 
-(defrule ask-underwater
-   (need-underwater ?)
+(defrule ask-water
+   (need-water ?)
  =>
-   (assert (underwater (askQuestion "Is your animal an animal which lives underwater?")))
-)
-
-(defrule ask-desert
-   (need-desert ?)
- =>
-   (assert (desert (askQuestion "Is your animal an animal which lives in the desert?")))
+   (assert (water (askQuestion "Does your animal live underwater? ")))
 )
 
 (defrule ask-bird
    (need-bird ?)
  =>
-   (assert (bird (askQuestion "Is your animal a bird?")))
+   (assert (bird (askQuestion "Is your animal a bird? ")))
+)
+
+(defrule ask-fish
+   (need-fish ?)
+ =>
+   (assert (fish (askQuestion "Is your animal a fish? ")))
+)
+
+(defrule ask-heavy
+   (need-heavy ?)
+ =>
+   (assert (heavy (askQuestion "Does your animal have a mass > 10kg? ")))
+)
+
+(defrule ask-medium
+   (need-medium ?)
+ =>
+   (assert (medium (askQuestion "Does your animal have a mass between 1kg and 10kg? ")))
+)
+
+(defrule ask-light
+   (need-light ?)
+ =>
+   (assert (light (askQuestion "Does your animal have a mass between < 10kg? ")))
+)
+
+(defrule ask-shell
+   (need-shell ?)
+ =>
+   (assert (shell (askQuestion "Does your animal have a shell or other protective covering? ")))
+)
+
+(defrule ask-horn
+   (need-horn ?)
+ =>
+   (assert (horn (askQuestion "Does your animal have a horn or antlers? ")))
+)
+
+(defrule ask-tail
+   (need-tail ?)
+ =>
+   (assert (tail (askQuestion "Does your animal have a tail of >10cm? ")))
+)
+
+(defrule ask-claw
+   (need-claw ?)
+ =>
+   (assert (claw (askQuestion "Does your animal have claws? ")))
 )
 
 ; Animal rules: identifies an animal based on a unique subset of traits 
-(defrule is-owl
-   (carnivore y)
-   (face y)
- =>
-   (finish "Is your animal an owl?")
-)
-
-(defrule is-cow
-   (herbivore y)
-   (mammal y)
-   (domesticated y)
- =>
-   (finish "Is your animal a cow?")
-)
-
-(defrule is-bee
-   (herbivore y)
-   (arthropod y)
- =>
-   (finish "Is your animal a bee?")
-)
-
-(defrule is-frog
-   (carnivore y)
-   (tree y)
-   (underwater y)
- =>
-   (finish "Is your animal a frog?")
-)
-
-(defrule is-goldfish
+(defrule is-pig
    (omnivore y)
-   (fins y)
+   (farm y)
+   (heavy y)
  =>
-   (finish "Is your animal a goldfish?")
-)
-
-(defrule is-bear
-   (omnivore y)
-   (mammal y)
-   (tree y)
- =>
-   (finish "Is your animal a bear?")
-)
-
-(defrule is-duck
-   (omnivore y)
-   (face y)
- =>
-   (finish "Is your animal a duck?")
-)
-
-(defrule is-cat
-   (carnivore y)
-   (mammal y)
- =>
-   (finish "Is your animal a cat?")
+   (finish "My guess: Is your animal a pig? ")
 )
 
 (defrule is-dog
    (omnivore y)
-   (mammal y)
-   (domesticated y)
+   (pet y)
+   (medium y)
  =>
-   (finish "Is your animal a dog?")
+   (finish "My guess: Is your animal a dog? ")
 )
 
-(defrule is-shark
-   (carnivore y)
-   (fins y)
+(defrule is-hamster
+   (omnivore y)
+   (light y)
+   (tail y)
  =>
-   (finish "Is your animal a shark?")
+   (finish "My guess: Is your animal a hamster? ")
 )
 
-(defrule is-snake
-   (carnivore y)
-   (desert y)
+(defrule is-bear
+   (omnivore y)
+   (tree y)
  =>
-   (finish "Is your animal a snake?")
+   (finish "My guess: Is your animal a bear? ")
 )
 
 (defrule is-crab
    (omnivore y)
    (arthropod y)
  =>
-   (finish "Is your animal a crab?")
-)
-
-(defrule is-elephant
-   (herbivore y)
-   (mammal y)
-   (face y)
- =>
-   (finish "Is your animal an elephant?")
+   (finish "My guess: Is your animal a crab? ")
 )
 
 (defrule is-turtle
    (omnivore y)
    (reptile y)
  =>
-   (finish "Is your animal a turtle?")
-)
-
-(defrule is-camel
-   (herbivore y)
-   (desert y)
- =>
-   (finish "Is your animal a camel?")
+   (finish "My guess: Is your animal a turtle? ")
 )
 
 (defrule is-chicken
    (omnivore y)
    (bird y)
+   (claws y)
  =>
-   (finish "Is your animal a chicken?")
+   (finish "My guess: Is your animal a chicken? ")
+)
+
+(defrule is-duck
+   (farm y)
+   (water y)
+ =>
+   (finish "My guess: Is your animal a duck? ")
+)
+
+(defrule is-goldfish
+   (omnivore y)
+   (fish y)
+ =>
+   (finish "My guess: Is your animal a goldfish? ")
+)
+
+(defrule is-cat
+   (carnivore y)
+   (mammal y)
+   (pet y)
+ =>
+   (finish "My guess: Is your animal a cat? ")
+)
+
+(defrule is-polar-bear
+   (carnivore y)
+   (mammal y)
+   (leg y)
+   (heavy y)
+ =>
+   (finish "My guess: Is your animal a polar bear? ")
+)
+
+(defrule is-dolphin
+   (mammal y)
+   (water y)
+ =>
+   (finish "My guess: Is your animal a dolphin? ")
+)
+
+(defrule is-alligator
+   (carnivore y)
+   (reptile y)
+   (leg y)
+ =>
+   (finish "My guess: Is your animal an alligator? ")
+)
+
+(defrule is-snake
+   (reptile y)
+   (tree y)
+ =>
+   (finish "My guess: Is your animal a snake? ")
+)
+
+(defrule is-owl
+   (carnivore y)
+   (medium y)
+ =>
+   (finish "My guess: Is your animal an owl? ")
+)
+
+(defrule is-frog
+   (carnivore y)
+   (light y)
+ =>
+   (finish "My guess: Is your animal a frog? ")
 )
 
 (defrule is-polar-bear
    (carnivore y)
    (mammal y)
  =>
-   (finish "Is your animal a polar bear?")
+   (finish "My guess: Is your animal a polar bear? ")
 )
 
 (defrule is-penguin
    (carnivore y)
-   (underwater y)
+   (water y)
    (bird y)
  =>
-   (finish "Is your animal a polar bear?")
+   (finish "My guess: Is your animal a penguin? ")
+)
+
+(defrule is-dolphin
+   (carnivore y)
+   (mammal y)
+   (water y)
+ =>
+   (finish "My guess: Is your animal a dolphin? ")
+)
+
+(defrule is-whale
+   (carnivore y)
+   (mammal y)
+   (water y)
+ =>
+   (finish "My guess: Is your animal a dolphin? ")
 )
 
 ; Gameplay functions
@@ -282,6 +352,7 @@
 */
 (deffunction finish (?msg)
    (printline ?msg)
+   (printline (str-cat "Number of questions asked: " ?*QUESTIONS_ASKED*))
    (halt)
 )
 
@@ -298,18 +369,22 @@
 
    (if (= ?*QUESTIONS_ASKED* ?*QUESTION_LIMIT*) then (finish "It seems that I have asked too many questions :( ")
     else
-      (printline ?msg)
-      (bind ?ans (lowcase (readline t)))
+      (printout t ?msg)
+      (bind ?ans "")
+      (while (= (str-length ?ans) 0) (bind ?ans (lowcase (readline t))))
 
       (while (not (or (= ?ans "y") (= ?ans "yes") (= ?ans "n") (= ?ans "no") 
                       (= ?ans "u") (= ?ans "unknown") (= ?ans "i don't know") (= ?ans "unsure") 
                       (= ?ans "q") (= ?ans "quit")))
-         
-         (if (= ?ans "f") then (facts)
-          else (printline "please respond with yes, no, or unsure")
+
+         (if (= ?ans "f") then 
+            (facts)
+            (printout t ?msg)
+          else 
+            (printout t "please respond with yes, no, or unsure ")
          )
 
-         (bind ?ans (read t))
+         (while (= (str-length ?ans) 0) (bind ?ans (lowcase (readline t))))
 
       ) ; (while (not (or (= ?ans "y") (= ?ans "yes") (= ?ans "n") (= ?ans "no") 
         ;                 (= ?ans "u") (= ?ans "unknown") (= ?ans "i don't know") (= ?ans "unsure") 
