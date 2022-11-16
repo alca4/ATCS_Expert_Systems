@@ -2,7 +2,7 @@
 ** Author: Andrew Liang
 ** Date of Creation: 10.06.2022
 ** Description: 
-** Plays the animal game using purely forward chaining
+** Plays the animal game using forward and backward chaining
 ** 
 ** Each animal has some traits
 ** Traits contain a string (its name) and a number (its condition)
@@ -26,33 +26,38 @@
 */
 
 (batch "./Code/utilities_v4.clp")
+(defglobal ?*HEADER* = "./Code/Animal")
+(defglobal ?*knowledgeTraits* = (create$))
+
+(defglobal ?*ISLAND_DEPTH* = 2)
 (defglobal ?*QUESTION_LIMIT* = 20)
-(defglobal ?*QUESTIONS_ASKED* = 0)
+(defglobal ?*questionsAsked* = 0)
 
 ; need backward chaining
 (do-backward-chaining omnivore)
 (do-backward-chaining carnivore)
 (do-backward-chaining herbivore)
+
 (do-backward-chaining mammal)
 (do-backward-chaining arthropod)
 (do-backward-chaining reptile)
+(do-backward-chaining bird)
+(do-backward-chaining fish)
+
 (do-backward-chaining farm)
-(do-backward-chaining leg)
 (do-backward-chaining pet)
 (do-backward-chaining tree)
 (do-backward-chaining water)
-(do-backward-chaining bird)
-(do-backward-chaining fish)
-(do-backward-chaining heavy)
-(do-backward-chaining medium)
-(do-backward-chaining light)
 (do-backward-chaining shell)
 (do-backward-chaining horn)
 (do-backward-chaining tail)
 (do-backward-chaining claw)
+(do-backward-chaining warm)
+(do-backward-chaining aus)
+(do-backward-chaining whisker)
 
 (defrule first-rule "prints user interface instructions"
-   (declare (salience 10000))
+   (declare (salience 100))
  =>
    (printline "Welcome to the Animal Game! Please think of an animal.")
    (printline "In the course of this game you will be asked a up to 20 yes/no questions regarding your animal.")
@@ -64,7 +69,7 @@
 
 ; termination rules (if these fire i've lost the game)
 
-(defrule last-rule "last rule to fire, fires when no animals with matching characteristics found"
+(defrule last-rule "last rule to fire, fires when no animals with matching characteristics found. erases all animal rules batched in"
    (declare (salience -100))
  =>
    (finish "I can't get any more information and I still don't know what it is :(")
@@ -90,6 +95,7 @@
 )
 
 (defrule ask-mammal
+   (declare (salience 1))
    (need-mammal ?)
  =>
    (assert (mammal (askQuestion "Is your animal a mammal? ")))
@@ -107,16 +113,22 @@
    (assert (reptile (askQuestion "Is your animal a reptile? ")))
 )
 
+(defrule ask-bird
+   (need-bird ?)
+ =>
+   (assert (bird (askQuestion "Is your animal a bird? ")))
+)
+
+(defrule ask-fish
+   (need-fish ?)
+ =>
+   (assert (fish (askQuestion "Is your animal a fish? ")))
+)
+
 (defrule ask-farm
    (need-farm ?)
  =>
    (assert (farm (askQuestion "Is your animal a farm animal? ")))
-)
-
-(defrule ask-leg
-   (need-leg ?)
- =>
-   (assert (leg (askQuestion "Does your animal have legs? ")))
 )
 
 (defrule ask-pet
@@ -137,36 +149,6 @@
    (assert (water (askQuestion "Does your animal live underwater? ")))
 )
 
-(defrule ask-bird
-   (need-bird ?)
- =>
-   (assert (bird (askQuestion "Is your animal a bird? ")))
-)
-
-(defrule ask-fish
-   (need-fish ?)
- =>
-   (assert (fish (askQuestion "Is your animal a fish? ")))
-)
-
-(defrule ask-heavy
-   (need-heavy ?)
- =>
-   (assert (heavy (askQuestion "Does your animal have a mass > 10kg? ")))
-)
-
-(defrule ask-medium
-   (need-medium ?)
- =>
-   (assert (medium (askQuestion "Does your animal have a mass between 1kg and 10kg? ")))
-)
-
-(defrule ask-light
-   (need-light ?)
- =>
-   (assert (light (askQuestion "Does your animal have a mass between < 10kg? ")))
-)
-
 (defrule ask-shell
    (need-shell ?)
  =>
@@ -182,7 +164,7 @@
 (defrule ask-tail
    (need-tail ?)
  =>
-   (assert (tail (askQuestion "Does your animal have a tail of >10cm? ")))
+   (assert (tail (askQuestion "Does your animal have a short tail? ")))
 )
 
 (defrule ask-claw
@@ -191,156 +173,71 @@
    (assert (claw (askQuestion "Does your animal have claws? ")))
 )
 
-; Animal rules: identifies an animal based on a unique subset of traits 
-(defrule is-pig
-   (omnivore y)
-   (farm y)
-   (heavy y)
+(defrule ask-warm
+   (need-warm ?)
  =>
-   (finish "My guess: Is your animal a pig? ")
+   (assert (warm (askQuestion "Does your animal live in a warm land environment? ")))
 )
 
-(defrule is-dog
-   (omnivore y)
-   (pet y)
-   (medium y)
+(defrule ask-aus
+   (need-aus ?)
  =>
-   (finish "My guess: Is your animal a dog? ")
+   (assert (aus (askQuestion "Is one of your animal's subspecies native to Australia? ")))
 )
 
-(defrule is-hamster
-   (omnivore y)
-   (light y)
-   (tail y)
+(defrule ask-whisker
+   (need-whisker ?)
  =>
-   (finish "My guess: Is your animal a hamster? ")
+   (assert (whisker (askQuestion "Does your animal have whiskers? ")))
 )
 
-(defrule is-bear
-   (omnivore y)
-   (tree y)
- =>
-   (finish "My guess: Is your animal a bear? ")
-)
+; First knowledge island separation: mammal vs non-mammal
 
-(defrule is-crab
-   (omnivore y)
-   (arthropod y)
- =>
-   (finish "My guess: Is your animal a crab? ")
-)
-
-(defrule is-turtle
-   (omnivore y)
-   (reptile y)
- =>
-   (finish "My guess: Is your animal a turtle? ")
-)
-
-(defrule is-chicken
-   (omnivore y)
-   (bird y)
-   (claws y)
- =>
-   (finish "My guess: Is your animal a chicken? ")
-)
-
-(defrule is-duck
-   (farm y)
-   (water y)
- =>
-   (finish "My guess: Is your animal a duck? ")
-)
-
-(defrule is-goldfish
-   (omnivore y)
-   (fish y)
- =>
-   (finish "My guess: Is your animal a goldfish? ")
-)
-
-(defrule is-cat
-   (carnivore y)
-   (mammal y)
-   (pet y)
- =>
-   (finish "My guess: Is your animal a cat? ")
-)
-
-(defrule is-polar-bear
-   (carnivore y)
-   (mammal y)
-   (leg y)
-   (heavy y)
- =>
-   (finish "My guess: Is your animal a polar bear? ")
-)
-
-(defrule is-dolphin
-   (mammal y)
-   (water y)
- =>
-   (finish "My guess: Is your animal a dolphin? ")
-)
-
-(defrule is-alligator
-   (carnivore y)
-   (reptile y)
-   (leg y)
- =>
-   (finish "My guess: Is your animal an alligator? ")
-)
-
-(defrule is-snake
-   (reptile y)
-   (tree y)
- =>
-   (finish "My guess: Is your animal a snake? ")
-)
-
-(defrule is-owl
-   (carnivore y)
-   (medium y)
- =>
-   (finish "My guess: Is your animal an owl? ")
-)
-
-(defrule is-frog
-   (carnivore y)
-   (light y)
- =>
-   (finish "My guess: Is your animal a frog? ")
-)
-
-(defrule is-polar-bear
-   (carnivore y)
+(defrule is-mammal
    (mammal y)
  =>
-   (finish "My guess: Is your animal a polar bear? ")
+   (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "mammal"))
 )
 
-(defrule is-penguin
-   (carnivore y)
-   (water y)
-   (bird y)
+(defrule is-not-mammal
+   (mammal n)
  =>
-   (finish "My guess: Is your animal a penguin? ")
+   (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "not-mammal"))
 )
 
-(defrule is-dolphin
-   (carnivore y)
-   (mammal y)
-   (water y)
+; Second knowledge island separation: what does the animal eat?
+
+(defrule is-omnivore
+   (omnivore y)
  =>
-   (finish "My guess: Is your animal a dolphin? ")
+   (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "omnivore"))
 )
 
-(defrule is-whale
+(defrule is-carnivore
+   (omnivore n)
    (carnivore y)
-   (mammal y)
-   (water y)
  =>
-   (finish "My guess: Is your animal a dolphin? ")
+   (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "carnivore"))
+)
+
+(defrule is-herbivore
+   (omnivore n)
+   (carnivore n)
+ =>
+   (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "herbivore"))
+)
+
+(defrule load-animals "loads animals based on the header determined by knowledge island separation"
+   (declare (salience -1))
+ =>
+   (printline "loaded animals")
+   (bind ?fileToOpen ?*HEADER*)
+
+   (for (bind ?i 1) (<= ?i (length$ ?*knowledgeTraits*)) (++ ?i)
+      (bind ?fileToOpen (str-cat ?fileToOpen "/" (nth$ ?i ?*knowledgeTraits*)))
+   )
+
+   (batch (str-cat ?fileToOpen ".clp"))
 )
 
 ; Gameplay functions
@@ -351,8 +248,14 @@
 ** Stops the rule engine
 */
 (deffunction finish (?msg)
+
    (printline ?msg)
-   (printline (str-cat "Number of questions asked: " ?*QUESTIONS_ASKED*))
+
+   (if (eq (length$ ?*knowledgeTraits*) ?*ISLAND_DEPTH*) then
+      (build (str-cat "(clear-animal-rules)"))
+   ) ; (if (length$ ?*knowledgeTraits* ?*ISLAND_DEPTH*) then
+
+   (printline (str-cat "Number of questions asked: " ?*questionsAsked*))
    (halt)
 )
 
@@ -367,38 +270,38 @@
 
    (bind ?ret "dummy") ; if the question limit is exceeded, it still needs to return ?ret, so a dummy variable is assigned here
 
-   (if (= ?*QUESTIONS_ASKED* ?*QUESTION_LIMIT*) then (finish "It seems that I have asked too many questions :( ")
+   (if (eq ?*questionsAsked* ?*QUESTION_LIMIT*) then (finish "It seems that I have asked too many questions :( ")
     else
       (printout t ?msg)
       (bind ?ans "")
-      (while (= (str-length ?ans) 0) (bind ?ans (lowcase (readline t))))
+      (while (eq (str-length ?ans) 0) (bind ?ans (lowcase (readline t))))
 
-      (while (not (or (= ?ans "y") (= ?ans "yes") (= ?ans "n") (= ?ans "no") 
-                      (= ?ans "u") (= ?ans "unknown") (= ?ans "i don't know") (= ?ans "unsure") 
-                      (= ?ans "q") (= ?ans "quit")))
+      (while (not (or (eq ?ans "y") (eq ?ans "yes") (eq ?ans "n") (eq ?ans "no") 
+                      (eq ?ans "u") (eq ?ans "unknown") (eq ?ans "i don't know") (eq ?ans "unsure") 
+                      (eq ?ans "q") (eq ?ans "quit")))
 
-         (if (= ?ans "f") then 
+         (if (eq ?ans "f") then 
             (facts)
             (printout t ?msg)
           else 
             (printout t "please respond with yes, no, or unsure ")
          )
 
-         (while (= (str-length ?ans) 0) (bind ?ans (lowcase (readline t))))
+         (bind ?ans "")
+         (while (eq (str-length ?ans) 0) (bind ?ans (lowcase (readline t))))
+      ) ; (while (not (or (eq ?ans "y") (eq ?ans "yes") (eq ?ans "n") (eq ?ans "no") 
+        ;                 (eq ?ans "u") (eq ?ans "unknown") (eq ?ans "i don't know") (eq ?ans "unsure") 
+        ;                 (eq ?ans "q") (eq ?ans "quit")))
 
-      ) ; (while (not (or (= ?ans "y") (= ?ans "yes") (= ?ans "n") (= ?ans "no") 
-        ;                 (= ?ans "u") (= ?ans "unknown") (= ?ans "i don't know") (= ?ans "unsure") 
-        ;                 (= ?ans "q") (= ?ans "quit")))
+      (if (or (eq ?ans "q") (eq ?ans "quit")) then (finish "Game terinated by user choice."))
 
-      (if (or (= ?ans "q") (= ?ans "quit")) then (finish "Game terinated by user choice."))
-
-      (if (or (= ?ans "y") (= ?ans "yes")) then (bind ?ret y)
+      (if (or (eq ?ans "y") (eq ?ans "yes")) then (bind ?ret y)
        else (bind ?ret n)
       )
 
-   ) ; (if (= ?*QUESTIONS_ASKED* ?*QUESTION_LIMIT*) then
+   ) ; (if (eq ?*questionsAsked* ?*QUESTION_LIMIT*) then
 
-   (++ ?*QUESTIONS_ASKED*)
+   (++ ?*questionsAsked*)
 
    (return ?ret)
 )
