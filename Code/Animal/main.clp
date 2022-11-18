@@ -191,6 +191,12 @@
    (assert (whisker (askQuestion "Does your animal have whiskers? ")))
 )
 
+(defrule ask-sting
+   (need-sting ?)
+ =>
+   (assert (sting (askQuestion "Does your animal sting? ")))
+)
+
 ; First knowledge island separation: mammal vs non-mammal
 
 (defrule is-mammal
@@ -230,7 +236,6 @@
 (defrule load-animals "loads animals based on the header determined by knowledge island separation"
    (declare (salience -1))
  =>
-   (printline "loaded animals")
    (bind ?fileToOpen ?*HEADER*)
 
    (for (bind ?i 1) (<= ?i (length$ ?*knowledgeTraits*)) (++ ?i)

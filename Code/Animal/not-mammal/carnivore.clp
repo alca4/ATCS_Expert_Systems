@@ -52,6 +52,14 @@
    (finish "My guess: Is your animal a coral? ")
 )
 
+(defrule is-anemone
+   (reptile n)
+   (bird n)
+   (sting y)
+ =>
+   (finish "My guess: Is your animal a sea anemone? ")
+)
+
 (deffunction clear-animal-rules ()
    (undefrule is-alligator)
    (undefrule is-snake)
@@ -60,6 +68,7 @@
    (undefrule is-shark)
    (undefrule is-frog)
    (undefrule is-coral)
+   (undefrule is-anemone)
 
    (return)
 )

@@ -16,10 +16,17 @@
    (finish "My guess: Is your animal an iguana? ")
 )
 
+(defrule is-pigeon
+   (bird y)
+ =>
+   (finish "My guess: Is your animal a pigeon? ")
+)
+
 (deffunction clear-animal-rules ()
    (undefrule is-bee)
    (undefrule is-salamander)
    (undefrule is-iguana)
+   (undefrule is-pigeon)
 
    (return)
 )

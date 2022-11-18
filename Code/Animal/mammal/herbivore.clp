@@ -1,36 +1,43 @@
 (defrule is-cow
-   (horn y)
+   (tail n)
    (farm y)
  =>
    (finish "My guess: Is your animal a cow? ")
 )
 
 (defrule is-rabbit
-   (horn n)
+   (tail y)
    (pet y)
  =>
    (finish "My guess: Is your animal a rabbit? ")
 )
 
 (defrule is-moose
-   (horn y)
    (tail y)
+   (horn y)
  =>
    (finish "My guess: Is your animal a moose? ")
 )
 
 (defrule is-elephant
-   (horn n)
+   (tail n)
    (warm y)
  =>
    (finish "My guess: Is your animal an elephant? ")
 )
 
 (defrule is-koala
-   (horn n)
+   (tail n)
    (tree y)
  =>
    (finish "My guess: Is your animal a koala?")
+)
+
+(defrule is-panda
+   (tail y)
+   (tree y)
+ =>
+   (finish "My guess: Is your animal a panda?")
 )
 
 (deffunction clear-animal-rules ()
@@ -39,6 +46,7 @@
    (undefrule is-moose)
    (undefrule is-elephant)
    (undefrule is-koala)
+   (undefrule is-panda)
 
    (return)
 )
