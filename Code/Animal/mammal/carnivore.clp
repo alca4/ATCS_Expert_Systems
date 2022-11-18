@@ -1,3 +1,10 @@
+/*
+** Author: Andrew Liang
+** Date of Creation: 11.15.2022
+** Description: contains identification rules for carnivorous mammals
+** Includes a function to undefine each rule
+*/
+
 (defrule is-dolphin
    (warm n)
    (water y)
@@ -40,6 +47,9 @@
    (finish "My guess: Is your animal a seal?")
 )
 
+/*
+** Deletes all rules defined in file
+*/
 (deffunction clear-animal-rules ()
    (undefrule is-dolphin)
    (undefrule is-polar-bear)

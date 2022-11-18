@@ -1,3 +1,10 @@
+/*
+** Author: Andrew Liang
+** Date of Creation: 11.17.2022
+** Description: contains identification rules for carnivorous animals which are not reptiles or birds
+** Includes a function to undefine each rule
+*/
+
 (defrule is-shark
    (fish y)
    (appendage n)
@@ -35,6 +42,9 @@
    (finish "My guess: Is your animal an octopus? ")
 )
 
+/*
+** Deletes all rules defined in file
+*/
 (deffunction clear-animal-rules ()
    (undefrule is-shark)
    (undefrule is-frog)
