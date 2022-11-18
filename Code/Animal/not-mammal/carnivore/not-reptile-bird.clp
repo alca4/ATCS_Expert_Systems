@@ -1,5 +1,6 @@
 (defrule is-shark
    (fish y)
+   (appendage n)
  =>
    (finish "My guess: Is your animal a shark? ")
 )
@@ -28,12 +29,19 @@
    (finish "My guess: Is your animal an axolotl? ")
 )
 
+(defrule is-octopus
+   (appendage y)
+ =>
+   (finish "My guess: Is your animal an octopus? ")
+)
+
 (deffunction clear-animal-rules ()
    (undefrule is-shark)
    (undefrule is-frog)
    (undefrule is-coral)
    (undefrule is-anemone)
    (undefrule is-axolotl)
+   (undefrule is-octopus)
 
    (return)
 )

@@ -55,6 +55,7 @@
 (do-backward-chaining whisker)
 (do-backward-chaining sting)
 (do-backward-chaining reptile-bird)
+(do-backward-chaining appendage)
 
 (defrule first-rule "prints user interface instructions"
    (declare (salience 100))
@@ -146,7 +147,7 @@
 (defrule ask-water
    (need-water ?)
  =>
-   (assert (water (askQuestion "Does your animal live underwater? ")))
+   (assert (water (askQuestion "Does your animal live underwater for some of their life? ")))
 )
 
 (defrule ask-shell
@@ -201,6 +202,12 @@
    (need-reptile-bird ?)
  =>
    (assert (reptile-bird (askQuestion "Is your animal a reptile or bird? ")))
+)
+
+(defrule ask-appendage
+   (need-appendage ?)
+ =>
+   (assert (appendage (askQuestion "Does your animal have more than 4 appendages? ")))
 )
 
 ; First knowledge island separation: mammal vs non-mammal

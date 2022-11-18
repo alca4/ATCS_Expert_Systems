@@ -14,14 +14,14 @@
 
 (defrule is-duck
    (bird y)
-   (aus y)
+   (claw n)
  =>
    (finish "My guess: Is your animal a duck? ")
 )
 
 (defrule is-chicken
    (bird y)
-   (claws y)
+   (claw y)
  =>
    (finish "My guess: Is your animal a chicken? ")
 )
@@ -39,6 +39,6 @@
    (undefrule is-duck)
    (undefrule is-chicken)
    (undefrule is-goldfish)
-
+   
    (return)
 )

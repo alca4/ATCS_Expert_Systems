@@ -15,15 +15,15 @@
 )
 
 (defrule is-dog
-   (pet n)
+   (pet y)
    (tree n)
-   (aus y)
+   (whisker n)
  =>
    (finish "My guess: Is your animal a dog? ")
 )
 
 (defrule is-hamster
-   (pet n)
+   (pet y)
    (tree n)
    (whisker y)
  =>
@@ -46,6 +46,15 @@
    (finish "My guess: Is your animal a mouse? ")
 )
 
+(defrule is-monkey
+   (pet n)
+   (tree y)
+   (tail n)
+   (whisker n)
+ =>
+   (finish "My guess: Is your animal a monkey? ")
+)
+
 (deffunction clear-animal-rules ()
    (undefrule is-pig)
    (undefrule is-grizzly-bear)
@@ -53,6 +62,7 @@
    (undefrule is-hamster)
    (undefrule is-squirrel)
    (undefrule is-mouse)
+   (undefrule is-monkey)
 
    (return)
 )

@@ -40,6 +40,13 @@
    (finish "My guess: Is your animal a panda?")
 )
 
+(defrule is-goat
+   (tail y)
+   (farm y)
+ =>
+   (finish "My guess: Is your animal a goat? ")
+)
+
 (deffunction clear-animal-rules ()
    (undefrule is-cow)
    (undefrule is-rabbit)
@@ -47,6 +54,7 @@
    (undefrule is-elephant)
    (undefrule is-koala)
    (undefrule is-panda)
+   (undefrule is-goat)
 
    (return)
 )

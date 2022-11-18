@@ -33,12 +33,20 @@
    (finish "My guess: Is your animal a lion?")
 )
 
+(defrule is-seal
+   (water y)
+   (whisker y)
+ =>
+   (finish "My guess: Is your animal a seal?")
+)
+
 (deffunction clear-animal-rules ()
    (undefrule is-dolphin)
    (undefrule is-polar-bear)
    (undefrule is-cat)
    (undefrule is-drop-bear)
    (undefrule is-lion)
+   (undefrule is-seal)
 
    (return)
 )

@@ -1,6 +1,6 @@
 (defrule is-alligator
    (reptile y)
-   (claw y)
+   (tree n)
  =>
    (finish "My guess: Is your animal an alligator? ")
 )
@@ -14,7 +14,6 @@
 
 (defrule is-owl
    (reptile n)
-   (bird y)
    (tail y)
  =>
    (finish "My guess: Is your animal an owl? ")
@@ -22,8 +21,7 @@
 
 (defrule is-penguin
    (reptile n)
-   (bird y)
-   (water y)
+   (tail n)
  =>
    (finish "My guess: Is your animal a penguin? ")
 )
