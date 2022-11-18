@@ -29,7 +29,6 @@
 (defglobal ?*HEADER* = "./Code/Animal")
 (defglobal ?*knowledgeTraits* = (create$))
 
-(defglobal ?*ISLAND_DEPTH* = 2)
 (defglobal ?*QUESTION_LIMIT* = 20)
 (defglobal ?*questionsAsked* = 0)
 
@@ -43,7 +42,6 @@
 (do-backward-chaining reptile)
 (do-backward-chaining bird)
 (do-backward-chaining fish)
-
 (do-backward-chaining farm)
 (do-backward-chaining pet)
 (do-backward-chaining tree)
@@ -55,6 +53,8 @@
 (do-backward-chaining warm)
 (do-backward-chaining aus)
 (do-backward-chaining whisker)
+(do-backward-chaining sting)
+(do-backward-chaining reptile-bird)
 
 (defrule first-rule "prints user interface instructions"
    (declare (salience 100))
@@ -197,15 +197,23 @@
    (assert (sting (askQuestion "Does your animal sting? ")))
 )
 
+(defrule ask-reptile-bird
+   (need-reptile-bird ?)
+ =>
+   (assert (reptile-bird (askQuestion "Is your animal a reptile or bird? ")))
+)
+
 ; First knowledge island separation: mammal vs non-mammal
 
 (defrule is-mammal
+   (declare (salience 2))
    (mammal y)
  =>
    (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "mammal"))
 )
 
 (defrule is-not-mammal
+   (declare (salience 2))
    (mammal n)
  =>
    (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "not-mammal"))
@@ -214,23 +222,43 @@
 ; Second knowledge island separation: what does the animal eat?
 
 (defrule is-omnivore
+   (declare (salience 1))
    (omnivore y)
  =>
    (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "omnivore"))
+   (assert (carnivore n))
 )
 
 (defrule is-carnivore
-   (omnivore n)
+   (declare (salience 1))
    (carnivore y)
  =>
    (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "carnivore"))
+   (assert (omnivore n))
 )
 
 (defrule is-herbivore
+   (declare (salience 1))
    (omnivore n)
    (carnivore n)
  =>
    (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "herbivore"))
+)
+
+(defrule is-carnivore-reptile-bird "checks for a carnivore that is a reptile or bird"
+   (mammal n)
+   (carnivore y)
+   (reptile-bird y)
+ =>
+   (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "reptile-bird"))
+)
+
+(defrule is-carnivore-not-reptile-bird "checks for a carnivore that is neither a reptile nor bird"
+   (mammal n)
+   (carnivore y)
+   (reptile-bird n)
+ =>
+   (bind ?*knowledgeTraits* (create$ ?*knowledgeTraits* "not-reptile-bird"))
 )
 
 (defrule load-animals "loads animals based on the header determined by knowledge island separation"
@@ -256,9 +284,9 @@
 
    (printline ?msg)
 
-   (if (eq (length$ ?*knowledgeTraits*) ?*ISLAND_DEPTH*) then
+   (if (neq (length$ ?*knowledgeTraits*) 0) then
       (build (str-cat "(clear-animal-rules)"))
-   ) ; (if (length$ ?*knowledgeTraits* ?*ISLAND_DEPTH*) then
+   ) 
 
    (printline (str-cat "Number of questions asked: " ?*questionsAsked*))
    (halt)
