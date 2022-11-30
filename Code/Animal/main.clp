@@ -10,19 +10,19 @@
 ** y: when asked question, user either responded yes or system found that all remaining animals had this trait
 ** 
 ** Each animal has an associated rule which guesses the animal when its characteristics are matched
-** This rule is not necessarily in this file
+** These rules are in other files as delineated by knowledge islands.
 ** 
 ** The game terminates with a win when an animal is guessed (regardless of whether the animal was correct)
 ** The game terminates with a loss when one of two conditions are met:
 ** 1. Twenty questions have been asked before the system determined an animal
 ** 2. The system cannot gain new information and has not determined an animal
 ** 
-** Salience is used so that rules pertaining to the first knowledge island split fire first
-** 
+** Salience is used to fix the order knowledge island traits are asked
+** So mammal (the first split) is always asked first, then omnivore/carnivore/herbivore
 */
 
 (batch "./Code/utilities_v4.clp")
-(defglobal ?*HEADER* = "./Code/Animal")      ; header of the file 
+(defglobal ?*HEADER* = "./Code/Animal")      ; header of the knowledge island file, added on to by rules
 
 (defglobal ?*QUESTION_LIMIT* = 20)
 (defglobal ?*questionsAsked* = 0)
@@ -36,9 +36,9 @@
 (do-backward-chaining reptile)
 (do-backward-chaining bird)
 (do-backward-chaining fish)
-(do-backward-chaining farm)
+(do-backward-chaining farm)                  ; a farm animal
 (do-backward-chaining pet)
-(do-backward-chaining tree)
+(do-backward-chaining tree)                  ; can climb trees
 (do-backward-chaining water)                 ; lives underwater for part of their life
 (do-backward-chaining shell)                 ; has shell or protective covering
 (do-backward-chaining horn)
@@ -263,7 +263,9 @@
    (bind ?*HEADER* (str-cat ?*HEADER* "/not-reptile-bird"))
 )
 
-
+/**
+** salience is -1 so it executes after the knowledge island rules
+*/
 (defrule load-animals "loads animals based on the header determined by knowledge island separation"
    (declare (salience -1))
  =>
@@ -304,6 +306,7 @@
     else
       (printout t ?msg)
       (bind ?ans "")
+
       (while (eq (str-length ?ans) 0) (bind ?ans (lowcase (readline t))))
 
       (while (not (or (eq ?ans "y") (eq ?ans "yes") (eq ?ans "n") (eq ?ans "no") 
@@ -318,7 +321,9 @@
          )
 
          (bind ?ans "")
+
          (while (eq (str-length ?ans) 0) (bind ?ans (lowcase (readline t))))
+         
       ) ; (while (not (or (eq ?ans "y") (eq ?ans "yes") (eq ?ans "n") (eq ?ans "no") 
         ;                 (eq ?ans "u") (eq ?ans "unknown") (eq ?ans "i don't know") (eq ?ans "unsure") 
         ;                 (eq ?ans "q") (eq ?ans "quit")))

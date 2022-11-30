@@ -29,14 +29,6 @@
    (finish "My guess: Is your animal a dog? ")
 )
 
-(defrule is-hamster
-   (pet y)
-   (tree n)
-   (whisker y)
- =>
-   (finish "My guess: Is your animal a hamster? ")
-)
-
 (defrule is-squirrel
    (pet n)
    (tree y)
@@ -69,7 +61,6 @@
    (undefrule is-pig)
    (undefrule is-grizzly-bear)
    (undefrule is-dog)
-   (undefrule is-hamster)
    (undefrule is-squirrel)
    (undefrule is-mouse)
    (undefrule is-monkey)

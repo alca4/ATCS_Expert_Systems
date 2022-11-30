@@ -8,6 +8,7 @@
 (defrule is-dolphin
    (warm n)
    (water y)
+   (whiskers n)
  =>
    (finish "My guess: Is your animal a dolphin? ")
 )
@@ -41,6 +42,7 @@
 )
 
 (defrule is-seal
+   (warm n)
    (water y)
    (whisker y)
  =>

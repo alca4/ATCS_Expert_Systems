@@ -12,8 +12,8 @@
 )
 
 (defrule is-salamander
-   (arthopod n)
-   (claw n)
+   (tree y)
+   (water y)
  =>
    (finish "My guess: Is your animal a salamander? ")
 )
@@ -27,12 +27,13 @@
 
 (defrule is-pigeon
    (bird y)
+   (aus n)
  =>
    (finish "My guess: Is your animal a pigeon? ")
 )
 
 (defrule is-parrot
-   (claw y)
+   (bird y)
    (aus y)
  =>
    (finish "My guess: Is your animal a parrot? ")
