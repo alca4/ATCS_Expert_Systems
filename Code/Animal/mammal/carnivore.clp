@@ -20,11 +20,11 @@
    (finish "My guess: Is your animal a polar bear? ")
 )
 
-(defrule is-cat
+(defrule is-domesticated-cat
    (warm n)
    (pet y)
  =>
-   (finish "My guess: Is your animal a cat? ")
+   (finish "My guess: Is your animal a domesticated cat? ")
 )
 
 (defrule is-drop-bear "this isn't a real animal but it's funny"
@@ -55,7 +55,7 @@
 (deffunction clear-animal-rules ()
    (undefrule is-dolphin)
    (undefrule is-polar-bear)
-   (undefrule is-cat)
+   (undefrule is-domesticated-cat)
    (undefrule is-drop-bear)
    (undefrule is-lion)
    (undefrule is-seal)

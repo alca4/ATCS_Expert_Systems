@@ -40,6 +40,13 @@
    (finish "My guess: Is your animal a goldfish? ")
 )
 
+(defrule is-lizard
+   (bird n)
+   (claw y)
+ =>
+   (finish "My guess: Is your animal a lizard? ")
+)
+
 /*
 ** Deletes all rules defined in file
 */
@@ -49,6 +56,7 @@
    (undefrule is-duck)
    (undefrule is-chicken)
    (undefrule is-goldfish)
+   (undefrule is-lizard)
    
    (return)
 )
